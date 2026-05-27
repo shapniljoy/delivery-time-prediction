@@ -1,7 +1,7 @@
 Delivery-Time-Prediction
 ==============================
 
-Build a Machine learning project to predic food delivery time in minutes.
+Build a Machine learning project to predict food delivery time in minutes.
 
 Project Organization
 ------------
