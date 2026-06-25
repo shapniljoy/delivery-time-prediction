@@ -1,0 +1,189 @@
+
+============================
+--- ANN.ipynb ---
+============================
+CODE OUT (from "import pandas as pd import numpy as np  from Data_"): <Experiment: artifact_location='mlflow-artifacts:/d9762c4faf3a4bfea103f77712cd3976', creation_time=1782182568601, experiment_id='8', last_update_time=1782182568601, lifecycle_stage='active', name='ANN Model', tags={}, trace_location=None, workspace='default'>
+MD: # Simple 1 layer neural Network
+CODE OUT (from "model = Sequential()  model.add(Input(shape=(x_pre"): Epoch 1/50 [1m754/754[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m1s[0m 1ms/step - loss: 8.1443 - mae: 8.1443 - val_loss: 5.3988 - val_mae: 5.3988 Epoch 2/50 [1m754/754[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m1s[0m 915us/step - loss: 5.0639 - mae: 5.0639 - val_loss: 5.0226 - val_mae: 5.0226 Epoch 3/50 [1m754/754[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m1s[0m 911us/step - loss: 4.8443 - mae: 4.8443 - val_loss: 4.6855 - val_mae: 4.6855 Epoch 4/50 [1m754/754[0m [32m━━━━━━━━
+
+============================
+--- Baseline Model Selection.ipynb ---
+============================
+CODE OUT (from "import random,os import pandas as pd import numpy "): 2026/06/22 00:32:36 INFO mlflow.tracking.fluent: Experiment with name 'Baseline Model Selection' does not exist. Creating a new experiment. <Experiment: artifact_location='mlflow-artifacts:/53b2c3b96a9b4a99bfdd9f6cbca6c0fb', creation_time=1782066757278, experiment_id='4', last_update_time=1782066757278, lifecycle_stage='active', name='Baseline Model Selection', tags={}, trace_location=None, workspace='default'>
+MD: # Data Preparation
+MD: # Optuna with Data Pre-processing Pipeline
+CODE OUT (from " age_missing = Pipeline([     ('imputer',SimpleImp"): [I 2026-06-21 13:08:01,983] A new study created in memory with name: Baseline Model Selection 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/1/runs/54090403f2c14e02a7d3e6243cf43b3d 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/1 [I 2026-06-21 13:08:26,864] Trial 0 finished with value: -3.8584047786465945 and parameters: {'model': 'RF', 'n_estimator_rf': 93, 'max_depth_rf': 18}. Best is trial
+CODE OUT (from "study.trials_dataframe()[['value','params_model']]"):        value params_model 4  -3.756011          CAT 17 -3.757001          CAT 2  -3.765940         LGBM 18 -3.768202          CAT 16 -3.776994         LGBM 19 -3.798573          CAT 28 -3.805422         LGBM 22 -3.828055         LGBM 29 -3.851989           RF 0  -3.858405           RF 3  -3.872853          XGB 20 -3.874542          CAT 21 -3.914088          CAT 13 -3.981015         LGBM 23 -3.990271          CAT 9  -4.004663         LGBM 7  -4.008029          XGB 10 -4.111364          CAT 26 -4.
+CODE OUT (from "study.best_params"): {'model': 'CAT',  'iterations_cat': 190,  'depth_cat': 12,  'learning_rate_cat': 0.05236194873419147}
+MD: # Optuna After Dropping Missing Values
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-22 00:33:33,488] A new study created in memory with name: Baseline Model Selection 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/4/runs/68ec7705fa7447debaba4a669ccb449b 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/4 [I 2026-06-22 00:33:50,616] Trial 0 finished with value: -3.73152245798411 and parameters: {'model': 'RF', 'n_estimator_rf': 93, 'max_depth_rf': 18}. Best is trial 0
+CODE OUT (from "study.trials_dataframe()[['user_attrs_train_cv','u"):     user_attrs_train_cv  user_attrs_val_cv params_model 16            -3.435717          -3.560735         LGBM 2             -3.385513          -3.562750         LGBM 21            -3.444771          -3.566594         LGBM 17            -3.402695          -3.568282         LGBM 18            -3.459730          -3.570586         LGBM 24            -3.270008          -3.574296         LGBM 20            -3.367186          -3.581816         LGBM 4             -2.998890          -3.582621          
+
+============================
+--- Catboost Hyperparameter Tuning.ipynb ---
+============================
+CODE OUT (from "import random,os import pandas as pd import numpy "): <Experiment: artifact_location='mlflow-artifacts:/36bd27c304614850856dc46813670e50', creation_time=1782023434042, experiment_id='2', last_update_time=1782023434042, lifecycle_stage='active', name='Catboost Hyperparameter Tuning', tags={}, trace_location=None, workspace='default'>
+CODE OUT (from " age_missing = Pipeline([     ('imputer',SimpleImp"): [I 2026-06-21 15:01:37,923] A new study created in memory with name: Catboost Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/2/runs/2690ab4b854f45f59bc9b457aeb5b117 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/2 [I 2026-06-21 15:01:59,410] Trial 0 finished with value: -3.8672148909938038 and parameters: {'model': 'CAT', 'iterations_cat': 594, 'depth_cat': 6, 'learning_
+CODE OUT (from "study.trials_dataframe()[['user_attrs_train_mae','"):     user_attrs_train_mae  user_attrs_val_mae 29             -3.562786           -3.840783 25             -3.363053           -3.855817 23             -3.297442           -3.857548 22             -3.389168           -3.858959 10             -3.475746           -3.860999 8              -3.620652           -3.865058 11             -3.514678           -3.865778 0              -3.449130           -3.867215 21             -3.561570           -3.867496 14             -3.623154           -3.868763 20   
+CODE OUT (from "study.best_params"): {'model': 'CAT',  'iterations_cat': 870,  'depth_cat': 6,  'learning_rate_cat': 0.07004640531026783,  'l2_leaf_reg_cat': 6.052442660645366,  'random_strength_cat': 4,  'bagging_temperature_cat': 0.6297501718192056,  'border_count_cat': 142,  'grow_policy': 'SymmetricTree',  'max_ctr_complexity': 7}
+MD: # Optuna after Dropping Missing values
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-22 00:05:34,181] A new study created in memory with name: Catboost Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/2/runs/53bfafbfa9bf433a88ff6936bdab4986 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/2 [I 2026-06-22 00:05:52,410] Trial 0 finished with value: -3.640739321497491 and parameters: {'model': 'CAT', 'iterations_cat': 594, 'depth_cat': 6, 'learning_r
+CODE OUT (from " best_params = {     'iterations': 432,     'depth"): 0:	learn: 8.6936772	total: 3.86ms	remaining: 1.66s 1:	learn: 8.2261803	total: 6.88ms	remaining: 1.48s 2:	learn: 7.7365329	total: 10.1ms	remaining: 1.44s 3:	learn: 7.3074495	total: 13.4ms	remaining: 1.43s 4:	learn: 6.9872655	total: 16.5ms	remaining: 1.41s 5:	learn: 6.7156892	total: 19.3ms	remaining: 1.37s 6:	learn: 6.5290345	total: 22.6ms	remaining: 1.37s 7:	learn: 6.3714450	total: 25.6ms	remaining: 1.36s 8:	learn: 6.2260489	total: 28.7ms	remaining: 1.35s 9:	learn: 6.1106081	total: 31.6ms	remaini
+MD: # Optuna After dropping missing values and With Numerical variables
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-23 09:31:41,987] A new study created in memory with name: Catboost Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/2/runs/6cbaf548dab84ddb88b6f2cb1a6de234 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/2 [I 2026-06-23 09:31:57,568] Trial 0 finished with value: -3.1351864654746917 and parameters: {'model': 'CAT', 'iterations_cat': 594, 'depth_cat': 6, 'learning_
+CODE OUT (from "study.trials_dataframe()[['user_attrs_train_mae','"):     user_attrs_train_mae  user_attrs_val_mae 13             -2.601009           -3.130032 0              -2.673797           -3.135186 21             -2.883799           -3.138443 23             -2.838692           -3.140057 8              -2.921041           -3.140884 4              -2.989652           -3.151790 12             -2.343934           -3.154002 20             -1.894411           -3.159135 16             -2.773193           -3.159731 25             -2.432090           -3.160756 22   
+CODE OUT (from "study.best_params"): {'model': 'CAT',  'iterations_cat': 760,  'depth_cat': 7,  'learning_rate_cat': 0.04064929521264007,  'l2_leaf_reg_cat': 9.469145363756958,  'random_strength_cat': 3,  'bagging_temperature_cat': 0.7995033526242816,  'border_count_cat': 55,  'grow_policy': 'Depthwise',  'max_ctr_complexity': 6}
+CODE OUT (from " best_params = {     'iterations': 618,     'depth"): 0:	learn: 9.1712945	total: 144ms	remaining: 1m 28s 1:	learn: 9.0111783	total: 150ms	remaining: 46.2s 2:	learn: 8.8538136	total: 156ms	remaining: 32s 3:	learn: 8.7032741	total: 162ms	remaining: 24.8s 4:	learn: 8.5581593	total: 168ms	remaining: 20.6s 5:	learn: 8.4168628	total: 175ms	remaining: 17.8s 6:	learn: 8.2816376	total: 182ms	remaining: 15.9s 7:	learn: 8.1487725	total: 189ms	remaining: 14.4s 8:	learn: 8.0267445	total: 195ms	remaining: 13.2s 9:	learn: 7.9017936	total: 201ms	remaining: 12.2s 1
+
+============================
+--- Data Cleaing.ipynb ---
+============================
+MD: Missing Values Inspection
+MD: (1) The Missingness in rider's age and rating is correlated. (2) The Missingness in rider's age and order time is correlated. (3) The Missingness in rider's rating and order time is correlated. (4) The Missingness in traffic and weather is correlated.
+MD: # rider_id
+MD: # Age
+MD: # Ratings
+MD: # Locations
+MD: **Valid values for lat and long**   > India lies to the north of the equator between `6° 44′` and `35° 30′` north latitude and `68° 7′` and `97° 25′` east longitude.
+MD: Take the Absolute values of all negative locations. Consider any values less than 1 as missing values
+MD: # Time Subset
+MD: # Weather
+MD: # Traffic
+MD: # Vehicle Conditions
+MD: # Order Type
+MD: # vehicle type
+MD: # Multiple Deliveries
+MD: # Festival
+MD: # City Type
+MD: # Target Variable (Time)
+
+============================
+--- EDA.ipynb ---
+============================
+MD: # EDA Function Template
+MD: # Column Wise Analysis with Dependant variable Delivery Time
+MD: # Univariate Analysis
+MD: ## age
+MD: (1) Rider's Age is Uniformly distributed, it does not have any visible impact on the delivery time but statistical test says there is some relation.   (2) The linechart has a steep piecewise upward break when age is between 28-30 years.
+MD: ## Ratings
+MD: (1) Rating column is left skewed with multimodality and there are some outlier values, We have tried performing feature transformation of square but it did not help.   (2) still the statistical test says the rating has a significant impact on the delivery time.
+MD: ## Traffic
+MD: (1) As the mean time for traffic situation is different it is an important feature to predict the delivery time.   (2) Median Delivery time is highest when there is traffic jam is 30 minutes and lowest when there is no traffic is close to 20 minutes.
+MD: ## Weather
+MD: (1) Although The Delivery time evenly distributed among all the weather conditions, the anova test says it has a significant impact on the delivery time.   (2) There are high outliers in the delivery time for sunny, stormy, sandstorm weather conditions.   (3) Median delivery time for sunny weather i
+MD: ## vehicle_condition 
+MD: (1) Median time for vehicle condition 3 is 27-28 minutes which is the highest.     (3) Other vehicle conditions exhibiting simillar type of distribution. 
+MD: ## Order Type
+MD: (1) Each order type has simillar distribution and central tendancy.   (2) There is no impact of order type on the delivery time.
+MD: ## Vehicle Type
+MD: (1) Highest Number of vehicle type is Motorcycle with 58% and median delivery time is 27-28 minutes.   (2) Significant Impact on the delivery time.
+MD: ## Multiple_Deliveries
+MD: (1) Delivery time increases as multiple deliveries increases.   (2) Although there are not many data available but the time range for 2 and 3 multiple deliveries is 40-50 mintutes.   (3) we can merge multiple deliveries 2 and 3 together to control their sample size and variance.   (4) Highest number
+MD: ## Festivals
+MD: (1) During the festivals the median delivery time increases from 25 to 45 minutes.   (2) Data available for festivals is very low at 2%.
+MD: ## City Type
+MD: (1) 76% of the delivery is in metropolitan cities with median delivery time of 26-27 minutes.   (2) Very low data for semi-urban at 0.4%.
+MD: ## Target Variable Time
+MD: (1) Mean and Median delivery time is almost simillar at 26 minutes.   (2) We can see multi modality with 2 peaks at 17-18 and 26-27 minutes.   (3) skewness is satisfactory at 0.48 and the kurtosis values are also low.     (4) that's why we can ignore the outliers.
+MD: ## Distance KM
+MD: (1) Distance in KM has multimodal distribution.   (2) Distance is almost distributed as categorically.   (3) Statistical test says distance has a significant impact on the delivery time.   (4) Mean distance is 9 Km with Standard Deviation of 5.5 Km.
+MD: (1) Short and Medium distance has lower median delivery time.
+MD: # Day
+MD: (1) 3rd and 4th days of the month has highest number of deliveries at 42% of total order.   (2) there is not enough information available from this variable, we might drop this. 
+MD: # Month
+MD: (1) Februrary and March has highest number of deliveries at 62% of total order.   (2) there is not enough information available from this variable, we might drop this.
+MD: # Day of Week
+MD: (1) Thursday has the highest number of orders and Tuesday has the lowest.   (2) Median delivery time is highest on at 27-28 minutes for Friday and lowest on 24 minutes for Tuesday.
+MD: # Pick_up time
+MD: (1) Order Pickup time doesn't has any visible and statistical impact on the delivery time.
+MD: # Is weekend
+MD: (1) Median delivery time is slightly lower in weekend with simillar distribution with weekdays according to statistical tests.   (2) but visually the mean delivery time is same for both type of days.
+MD: # Time of day
+MD: (1) Most Numbers of orders are during the evening with highest median delivery time of 30 minutes.   (2) Lowest Median delivery time is during the morning with 22-23 minutes.
+MD: # Multivariate Analysis
+MD: (1) There are some extreme delivery time when it's cloudy and fog and traffic is heavy at mean close to 36 minutes.   (2) Regardless of the traffic the delivery time is lower for sunny weather.   (3) The lowest mean delivery time for sunny weather and medium traffic is 20 minutes.  
+MD: (1) Vehicle Condition 3 has higher mean delivery time regardless of the traffic.
+MD: (1) Electric Scooter has the lowest Mean delivery time regardless of the traffic with less outliers.   (2) Motorcycle has the highest median delivery time regardless of the traffic with more outliers.
+MD: (1) Regardless of the traffic the delivery time is higher during festivals.   But there are so less data for festivals.   (2) There is more traffic jam on festival days.
+MD: (1) Simillar distribution of median delivery time for all cities regardless of the traffic.   (2) Semi-urban has the highest mean delivery time regardless of the traffic, But there is not enough data for Semi-urban.
+MD: (1) Regardless of the weekend the mean delivery time is simillar for all traffic situations.
+MD: (1) Not enough data for all time of day.   (2) traffic is lowest in the morning with the lowest mean delivary time of 19 minutes when there is no traffic.   (3) traffic is highest in the evening and night with the highest mean delivary time of 31 minutes when it's jam
+
+============================
+--- Feature Selection.ipynb ---
+============================
+MD: ## Random Forest
+MD: # Gradient Boosting Regressor
+MD: # Recursive Feature Elimination
+MD: we can see top 5 features are ratings,weather conditions distance_km, multiple deliveries and age which contains almost 70% of feature importance and traffic, vehicle conditions time of the day and festivals can make up to 95% of total feature importance.
+CODE OUT (from "rf_with_features = RandomForestRegressor(n_estimat"): MAE with full feature set: 3.0588   R2 with full feature set: 0.8316 
+CODE OUT (from " x_train_subfeatures = x_train.drop(columns=['day_"): MAE with sub feature set: 3.1508   R2 with sub feature set: 0.8190 
+MD: After removing the variables with lower feature importance we got almost simillar results as with the full model but not the best one.   The best result is still with the full model till now.   With subfeatures the MAE increased from 3.05 minutes to 3.15 minutes and r2 score dropped from 83% to 81.9
+
+============================
+--- Final_model.ipynb ---
+============================
+CODE OUT (from "import random,os import pandas as pd import numpy "): <Experiment: artifact_location='mlflow-artifacts:/f6d08d54978041efba3e88cb266b6058', creation_time=1782115728966, experiment_id='7', last_update_time=1782115728966, lifecycle_stage='active', name='Final Model', tags={}, trace_location=None, workspace='default'>
+CODE OUT (from "with mlflow.start_run(run_name='Final Model') as p"): c:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\utils\validation.py:2732: UserWarning: X has feature names, but Lasso was fitted without feature names   warnings.warn( c:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\utils\validation.py:2732: UserWarning: X has feature names, but Lasso was fitted without feature names   warnings.warn( Training error: 3.3187787702520635 Testing error: 3.5131626105648444 Training R2 score: 0.7950227207
+MD: # Optuna after dropping missing values and With Numerical columns
+CODE OUT (from "with mlflow.start_run(run_name='Final Model') as p"): c:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\utils\validation.py:2732: UserWarning: X has feature names, but Lasso was fitted without feature names   warnings.warn( c:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\utils\validation.py:2732: UserWarning: X has feature names, but Lasso was fitted without feature names   warnings.warn( Training error: 2.68587641380368 Testing error: 3.0168762962799747 Training R2 score: 0.873263136885
+MD: ### The final model has a Test MAE of 3.01 minutes which is the lowest among all stacking and meta models results.   ### And it has the highest R2 score of 83.9% ~ 84%, The model is stored with mlflow and dagshub.
+
+============================
+--- Imputation.ipynb ---
+============================
+CODE OUT (from "num_cols = x_train.select_dtypes(include=['int64',"): [I 2026-05-28 14:09:11,538] A new study created in memory with name: Missing Values Imputation 🏃 View run Trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/0/runs/e57c8a7f7e944ec09b4fdcf4b1690856 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/0 [I 2026-05-28 14:09:32,792] Trial 0 finished with value: -3.299845396319566 and parameters: {'imputer_strategy': 'SimpleImputer', 'simple_strategy': 'most_frequent'
+MD: #### Best Hyperparameters:  {'imputer_strategy': 'IterativeImputer', 'max_iter': 30, 'imputation_order': 'ascending'}
+
+============================
+--- LGB HP.ipynb ---
+============================
+CODE OUT (from "import random,os import pandas as pd import numpy "): <Experiment: artifact_location='mlflow-artifacts:/2f629445f6af4f39abb6d2b7815fcd09', creation_time=1782068657306, experiment_id='5', last_update_time=1782068657306, lifecycle_stage='active', name='Lightboost Hyperparameter Tuning', tags={'mlflow.experimentKind': 'custom_model_development'}, trace_location=None, workspace='default'>
+MD: # Optuna After dropping Missing values
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-22 11:51:32,086] A new study created in memory with name: LGBM Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/5/runs/9f2eaab842284a9f8e78af2701ff3977 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/5 [I 2026-06-22 11:51:52,264] Trial 0 finished with value: -3.8014771246271244 and parameters: {'n_estimators': 1692, 'max_depth': 10, 'num_leaves': 162, 'min_child_
+CODE OUT (from "study.trials_dataframe()[['user_attrs_train_mae','"):     user_attrs_train_mae  user_attrs_val_mae 25             -3.378260           -3.639431 24             -3.318962           -3.644048 23             -3.383500           -3.650129 22             -3.390764           -3.650535 26             -3.233793           -3.652710 21             -3.411781           -3.653075 20             -3.298178           -3.664369 11             -3.306595           -3.669893 27             -3.351595           -3.674083 18             -3.396404           -3.674602 28   
+CODE OUT (from "study.best_params"): {'n_estimators': 1940,  'max_depth': 7,  'num_leaves': 57,  'min_child_samples': 228,  'colsample_bytree': 0.8452545147323064,  'learning_rate': 0.046640660322683554,  'reg_alpha': 0.020341454480246005,  'reg_lambda': 0.10776961230711216,  'boosting_type': 'dart',  'subsample': 0.9481361810641186}
+CODE OUT (from "best_model = LGBMRegressor(**study.best_params,   "): [LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.000690 seconds. You can set `force_row_wise=true` to remove the overhead. And if memory is not enough, you can set `force_col_wise=true`. [LightGBM] [Info] Total Bins 70 [LightGBM] [Info] Number of data points in the train set: 30156, number of used features: 31 [LightGBM] [Info] Start training from score 26.649755 [LightGBM] [Warning] No further splits with positive gain, best gain: -inf [LightGBM] [Warning]
+MD: # Optuna After dropping missing values and With Numerical variables
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-23 09:33:30,542] A new study created in memory with name: LGBM Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/5/runs/cc6f894ae453461c8ae4ca49cdff542f 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/5 [I 2026-06-23 09:34:38,707] Trial 0 finished with value: -3.326314615149169 and parameters: {'n_estimators': 1692, 'max_depth': 10, 'num_leaves': 162, 'min_child_s
+CODE OUT (from "study.trials_dataframe()[['user_attrs_train_mae','"):     user_attrs_train_mae  user_attrs_val_mae 27             -2.455945           -3.093812 26             -2.190976           -3.096698 23             -2.331494           -3.117825 22             -2.235928           -3.121014 24             -1.946363           -3.122366 21             -2.696301           -3.137352 18             -2.624053           -3.148633 17             -2.401259           -3.156720 11             -2.730944           -3.167733 12             -2.624876           -3.167934 10   
+CODE OUT (from "study.best_params"): {'n_estimators': 1179,  'max_depth': 11,  'num_leaves': 248,  'min_child_samples': 33,  'colsample_bytree': 0.7081733395491193,  'learning_rate': 0.01058529032007031,  'reg_alpha': 0.26886355209296653,  'reg_lambda': 7.876698984139518,  'boosting_type': 'gbdt',  'subsample': 0.8245515950974606}
+CODE OUT (from "best_model = LGBMRegressor(**study.best_params,   "): [LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.002189 seconds. You can set `force_row_wise=true` to remove the overhead. And if memory is not enough, you can set `force_col_wise=true`. [LightGBM] [Info] Total Bins 343 [LightGBM] [Info] Number of data points in the train set: 30156, number of used features: 30 [LightGBM] [Info] Start training from score 26.649755 [LightGBM] [Warning] No further splits with positive gain, best gain: -inf [LightGBM] [Warning
+
+============================
+--- missing Values Inspection.ipynb ---
+============================
+MD: # (1) Cross Validation Score with missing values Imputed
+CODE OUT (from "def objective(trial):      imputer_strategy = tria"): [I 2026-06-25 14:44:00,211] A new study created in memory with name: Missing Values Imputation [I 2026-06-25 14:44:59,599] Trial 0 finished with value: -3.3310724972082957 and parameters: {'imputer_strategy': 'KNNImputer', 'n_neighbors': 6, 'weights': 'distance'}. Best is trial 0 with value: -3.3310724972082957. [I 2026-06-25 14:46:25,937] Trial 1 finished with value: -3.3197670299351025 and parameters: {'imputer_strategy': 'IterativeImputer', 'max_iter': 4, 'imputation_order': 'ascending'}. Bes
+CODE OUT (from "print(f"Best parameters: {study.best_params} \n Be"): Best parameters: {'imputer_strategy': 'SimpleImputer', 'simple_imputer_strategy': 'mean'}   Best score: -3.2940169372634087 
+MD: # (2) Cross Val score after dropping missing values
+CODE OUT (from "model = Pipeline([     ('preprocessor', preprocess"):  Training cv score: -1.1562132978456607   Testing cv score: -3.1218288614877876 
+MD: Cross validation test score is lower when we drop the missing values.   So for better performance we should drop the missing values.
+
+============================
+--- Random Forest HP.ipynb ---
+============================
+CODE OUT (from "import random,os import pandas as pd import numpy "): <Experiment: artifact_location='mlflow-artifacts:/c4bca2fa7a064743ae83edd5ca6ba92d', creation_time=1782057513753, experiment_id='3', last_update_time=1782057513753, lifecycle_stage='active', name='Random Forest Hyperparameter Tuning', tags={}, trace_location=None, workspace='default'>
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-21 23:19:57,786] A new study created in memory with name: Random Forest Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/3/runs/93068bbe6f114a30878367c7eec6526b 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/3 [I 2026-06-21 23:20:16,412] Trial 0 finished with value: -4.183475789160248 and parameters: {'n_estimators': 594, 'max_depth': 16, 'min_samples_split': 8,
+CODE OUT (from "best_model = RandomForestRegressor(**study.best_pa"): Training error: 3.378394487584066 Testing error: 3.7178562946451796 Training R2 score: 0.7381792599605603 Testing R2 score: 0.7381792599605603 2026/06/21 23:42:45 WARNING mlflow.sklearn: Saving scikit-learn models in the pickle or cloudpickle format requires exercising caution because these formats rely on Python's object serialization mechanism, which can execute arbitrary code during deserialization. The recommended safe alternative is the 'skops' format. For more information, see: https://sci
+MD: # Optuna After Dropping Missing Values
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): 🏃 View run monumental-trout-561 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/3/runs/004a4045186a4e108d0591c2dc792578 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/3 [I 2026-06-22 00:18:19,932] A new study created in memory with name: Random Forest Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/3/runs/8fa81df3f9c142809cb46185cf376d69 🧪
+CODE OUT (from "best_model = RandomForestRegressor(**study.best_pa"): Training error: 3.2280202686431676 Testing error: 3.5291978993033983 Training R2 score: 0.8036317975834699 Testing R2 score: 0.7697788260001486 2026/06/22 01:30:40 WARNING mlflow.sklearn: Saving scikit-learn models in the pickle or cloudpickle format requires exercising caution because these formats rely on Python's object serialization mechanism, which can execute arbitrary code during deserialization. The recommended safe alternative is the 'skops' format. For more information, see: https://sc
+MD: # Optuna After dropping missing values and With Numerical variables
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-23 09:36:23,150] A new study created in memory with name: Random Forest Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/3/runs/ff7e02302ed347d895af1148bc72de83 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/3 [I 2026-06-23 09:36:35,799] Trial 0 finished with value: -3.5610245861231427 and parameters: {'n_estimators': 594, 'max_depth': 16, 'min_samples_split': 8
+CODE OUT (from "study.best_params"): {'n_estimators': 905,  'max_depth': 15,  'min_samples_split': 6,  'min_samples_leaf': 5,  'max_features': None,  'max_samples': 0.6142873087237279}
+CODE OUT (from "best_model = RandomForestRegressor(**study.best_pa"): Training error: 2.6170472615172935 Testing error: 3.0245296897272653 Training R2 score: 0.8791414071956365 Testing R2 score: 0.8385149998431674 2026/06/22 16:33:57 WARNING mlflow.sklearn: Saving scikit-learn models in the pickle or cloudpickle format requires exercising caution because these formats rely on Python's object serialization mechanism, which can execute arbitrary code during deserialization. The recommended safe alternative is the 'skops' format. For more information, see: https://sc
+
+============================
+--- StackingRegressor HP.ipynb ---
+============================
+CODE OUT (from "import random,os import pandas as pd import numpy "): <Experiment: artifact_location='mlflow-artifacts:/751c2160b14b43f4a222918cbcadbffb', creation_time=1782111186062, experiment_id='6', last_update_time=1782111186062, lifecycle_stage='active', name='StackingRegressor HP Tuning', tags={'mlflow.experimentKind': 'custom_model_development'}, trace_location=None, workspace='default'>
+MD: Previously we have run 3 different models, 2 boosting algorithms CatboostRegressor and LightGBMRegressor and 1 bagging algorithm Random forest.   The final Cross validation scores after dropping missing values and With Numerical columns are,   (1) LightGBMRegressor,   Training cv mae : 2.45 , Test c
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-22 13:40:21,348] A new study created in memory with name: StackingRegressor Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/6/runs/672589ba77664e98a3c64d5c2684d856 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/6 [I 2026-06-22 13:40:27,840] Trial 0 finished with value: -3.5529375168940254 and parameters: {'stacking_models': 'Lasso', 'alpha': 0.01391334632736371
+CODE OUT (from "study.trials_dataframe()[['user_attrs_train_cv','u"):     user_attrs_train_cv  user_attrs_val_cv params_stacking_models 29            -3.552161          -3.552611                  Lasso 25            -3.552166          -3.552616                  Lasso 28            -3.552188          -3.552638                  Lasso 27            -3.552188          -3.552639                  Lasso 22            -3.552236          -3.552688                  Lasso 24            -3.552252          -3.552704                  Lasso 21            -3.552253          -3.55
+CODE OUT (from "study.best_params"): {'stacking_models': 'Lasso', 'alpha': 0.2606044403283886}
+MD: # Optuna after dropping missing values and With Numerical columns
+CODE OUT (from "catboost_params = {'iterations': 618,             "): 0:	learn: 9.1994034	total: 6.92ms	remaining: 4.27s 1:	learn: 9.0383543	total: 13.5ms	remaining: 4.15s 2:	learn: 8.8863865	total: 20.5ms	remaining: 4.2s 3:	learn: 8.7417051	total: 27.2ms	remaining: 4.18s 4:	learn: 8.5999262	total: 34.6ms	remaining: 4.25s 5:	learn: 8.4591826	total: 40.8ms	remaining: 4.17s 6:	learn: 8.3208659	total: 49.5ms	remaining: 4.32s 7:	learn: 8.1930455	total: 56.3ms	remaining: 4.29s 8:	learn: 8.0687367	total: 63.2ms	remaining: 4.27s 9:	learn: 7.9486193	total: 70.5ms	remainin
+CODE OUT (from "def objective(trial):      with mlflow.start_run(n"): [I 2026-06-22 21:55:23,400] A new study created in memory with name: StackingRegressor Hyperparameter Tuning 🏃 View run trial_0 at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/6/runs/378d2df58d1d4986a7aafc1af2aeee1d 🧪 View experiment at: https://dagshub.com/shapniljoy/delivery-time-prediction.mlflow/#/experiments/6 [I 2026-06-22 21:55:28,442] Trial 0 finished with value: -3.05709812146938 and parameters: {'stacking_models': 'Lasso', 'alpha': 0.013913346327363716}
+CODE OUT (from "study.trials_dataframe()[['user_attrs_train_cv','u"):     user_attrs_train_cv  user_attrs_val_cv params_stacking_models 26            -3.055944          -3.056723                  Lasso 24            -3.055969          -3.056749                  Lasso 23            -3.056009          -3.056789                  Lasso 22            -3.056064          -3.056843                  Lasso 14            -3.056074          -3.056853                  Lasso 17            -3.056122          -3.056899                  Lasso 16            -3.056150          -3.05
+MD: Here, we have taken the out of box predicted values for each model and stacked them together to use as a input variables for the meta model hyperparamters tuning.   The Optuna tuning resulted into a perfectly fitting model with lasso regression with no gap in the training and validation scores.   Al

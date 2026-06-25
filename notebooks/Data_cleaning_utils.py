@@ -7,9 +7,6 @@ import datetime as dt
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
-df = pd.read_csv(r"C:/Users/User/delivery-time-prediction/data/raw/swiggy.csv")
-
-
 def column_name_change(data : pd.DataFrame):
 
         return (
@@ -36,7 +33,9 @@ def data_cleaning(data : pd.DataFrame):
                .assign(
             
                 city_name = lambda x : x['rider_id'].str.split("RES").str.get(0).str.strip(),
+                age = lambda x : x['age'].astype("float"),
                 age_cat = lambda x : pd.cut(x['age'].astype("float"), bins = [18, 25, 35, 50], labels = ['young', 'young-adult', 'Middle-aged']),
+                ratings = lambda x : x['ratings'].astype("float"),
                 ratings_cat = lambda x : pd.cut(x['ratings'].astype("float"),bins=[1,4,4.5,5],labels=['less than 4','4-4.5','4.5-5'],include_lowest=True),
                 weather = lambda x : x['weather'].str.strip().str.split('conditions ').str.get(1).str.lower(),
                 traffic = lambda x : x['traffic'].str.strip().str.lower(),
@@ -121,7 +120,9 @@ def extract_time_features(data : pd.DataFrame):
             )
 
 
-def perform_data_cleaning(df : pd.DataFrame):
+def perform_data_cleaning(file_path):
+
+        df = pd.read_csv(file_path)
 
         cleaned_df = ( df.pipe(column_name_change)
                  .pipe(data_cleaning)
@@ -140,6 +141,6 @@ if __name__ == "__main__":
 
        print("Dataframe loaded successfully. Starting data cleaning process...")
 
-       perform_data_cleaning(df)
+       perform_data_cleaning(file_path=r"C:/Users/User/delivery-time-prediction/data/raw/swiggy.csv")
 
        print("Data cleaning process completed successfully.")
